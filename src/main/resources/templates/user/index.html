@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+<h1>User Profile</h1>
+<div>
+    <a href="/logout">Logout</a>
+</div>
+
+<!-- Добавляем проверку на null -->
+<div th:if="${user != null}">
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <td th:text="${user.id}"></td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td th:text="${user.username}"></td>
+        </tr>
+        <tr>
+            <th>First Name</th>
+            <td th:text="${user.firstName}"></td>
+        </tr>
+        <tr>
+            <th>Last Name</th>
+            <td th:text="${user.lastName}"></td>
+        </tr>
+        <tr>
+            <th>Age</th>
+            <td th:text="${user.age}"></td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td th:text="${user.email}"></td>
+        </tr>
+        <tr>
+            <th>Roles</th>
+            <td th:text="${user.roles}"></td>
+        </tr>
+    </table>
+</div>
+
+<!-- Сообщение, если пользователь не найден -->
+<div th:if="${user == null}">
+    <p style="color: red;">User data not available</p>
+</div>
+</body>
+</html>
