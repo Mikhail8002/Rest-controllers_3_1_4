@@ -25,7 +25,7 @@ public class User implements UserDetails {
     private int age;
     private String email;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -44,7 +44,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    // Getters and setters
     public Long getId() {
         return id;
     }
@@ -115,7 +114,6 @@ public class User implements UserDetails {
         this.roles.add(role);
     }
 
-    // UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -139,5 +137,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return  username;
     }
 }

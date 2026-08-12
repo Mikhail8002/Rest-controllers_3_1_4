@@ -1,34 +1,95 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/html">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create user</title>
+    <title>Создание пользователя</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2 { color: #333; margin-bottom: 20px; border-bottom: 2px solid #4CAF50; padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-weight: bold; color: #333; margin-bottom: 5px; }
+        .form-group input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
+        .form-group input:focus { border-color: #4CAF50; outline: none; }
+        .role-checkboxes { display: flex; gap: 20px; margin-top: 5px; flex-wrap: wrap; }
+        .role-checkbox { display: flex; align-items: center; gap: 5px; }
+        .role-checkbox input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+        .role-checkbox label { cursor: pointer; font-weight: normal; }
+        .form-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary { background: #4CAF50; color: white; }
+        .btn-primary:hover { background: #45a049; }
+        .btn-secondary { background: #6c757d; color: white; }
+        .btn-secondary:hover { background: #5a6268; }
+        .hint { color: #999; font-size: 12px; margin-top: 5px; }
+        .required { color: red; }
+    </style>
 </head>
 <body>
-<form th:action="@{/users}" th:object="${user}" method="POST">
-    <label for="firstName">firstName</label>
-    <input type="text" id="firstName" th:field="*{firstName}" required>
-    </br>
+<div class="container">
+    <h2>➕ Создание нового пользователя</h2>
 
-    <label for="lastName">lastName</label>
-    <input type="text" id="lastName" th:field="*{lastName}" required>
-    </br>
+    <!-- ВАЖНО: используем ${userForm} вместо ${user} -->
+    <form th:action="@{/admin/create}" th:object="${userForm}" method="post">
+        <div class="form-group">
+            <label for="username">Имя пользователя <span class="required">*</span></label>
+            <input type="text" id="username" th:field="*{username}" required />
+        </div>
 
-    <label for="age">age</label>
-    <input type="text" id="age" th:field="*{age}" required>
-    </br>
+        <div class="form-group">
+            <label for="password">Пароль <span class="required">*</span></label>
+            <input type="password" id="password" th:field="*{password}" required />
+        </div>
 
+        <div class="form-group">
+            <label for="firstName">Имя</label>
+            <input type="text" id="firstName" th:field="*{firstName}" />
+        </div>
 
-    <label for="email">Email</label>
-    <input type="text" id="email" th:field="*{email}" required>
-    </br>
+        <div class="form-group">
+            <label for="lastName">Фамилия</label>
+            <input type="text" id="lastName" th:field="*{lastName}" />
+        </div>
 
-    <label for="password">password</label>
-    <input type="text" id="password" th:field="*{password}" required>
-    </br>
+        <div class="form-group">
+            <label for="age">Возраст</label>
+            <input type="number" id="age" th:field="*{age}" />
+        </div>
 
-    <button type="submit">create user</button>
-</form>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" />
+        </div>
+
+        <div class="form-group">
+            <label>Роли <span class="required">*</span></label>
+            <div class="role-checkboxes">
+                <div th:each="role : ${allRoles}" class="role-checkbox">
+                    <input type="checkbox"
+                           th:id="'role_' + ${role.id}"
+                           th:value="${role.id}"
+                           th:field="*{roleIds}" />
+                    <label th:for="'role_' + ${role.id}"
+                           th:text="${role.name.replace('ROLE_', '')}"></label>
+                </div>
+            </div>
+            <div class="hint">Выберите хотя бы одну роль</div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+            <a href="/admin" class="btn btn-secondary">❌ Отмена</a>
+        </div>
+    </form>
+</div>
 </body>
 </html>

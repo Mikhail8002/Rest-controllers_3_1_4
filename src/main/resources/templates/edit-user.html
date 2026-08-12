@@ -1,31 +1,175 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit user</title>
+    <title>Edit User</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="number"] {
+            width: 250px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .role-group {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+        .role-group label {
+            width: auto;
+            font-weight: normal;
+            margin-left: 5px;
+            margin-right: 20px;
+        }
+        .role-group input[type="checkbox"] {
+            margin: 5px 0;
+        }
+        .role-group-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        button {
+            background-color: #2196F3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #1976D2;
+        }
+        .cancel {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #666;
+        }
+        .cancel:hover {
+            color: #333;
+        }
+        .required {
+            color: red;
+        }
+        .info {
+            color: #666;
+            font-size: 12px;
+            font-style: italic;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .role-badge {
+            display: inline-block;
+            background-color: #9C27B0;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+        }
+    </style>
 </head>
 <body>
-<form th:action="@{/users/edit}" th:object="${user}" method="POST">
-    <input name="id" th:field="*{id}" th:value="${user.id}" hidden="hidden">
+<h2>Edit User</h2>
 
-    <label for="firstName">First Name</label>
-    <input type="text" id="firstName" th:field="*{firstName}" th:value="${user.firstName}" required>
-    </br>
+<form th:action="@{/admin/edit/{id}(id=${user.id})}" th:object="${user}" method="POST">
+    <input type="hidden" th:field="*{id}" />
 
-    <label for="lastName">Last Name</label>
-    <input type="text" id="lastName" th:field="*{lastName}" th:value="${user.lastName}" required>
-    </br>
+    <div class="form-group">
+        <label for="username">Username <span class="required">*</span></label>
+        <input type="text" id="username" th:field="*{username}" required>
+    </div>
 
-    <label for="email">Email</label>
-    <input type="text" id="email" th:field="*{email}" th:value="${user.email}" required>
-    </br>
+    <div class="form-group">
+        <label for="firstName">First Name <span class="required">*</span></label>
+        <input type="text" id="firstName" th:field="*{firstName}" required>
+    </div>
 
-    <label for="age">Age</label>
-    <input type="number" id="age" th:field="*{age}" th:value="${user.age}" required>
-    </br>
+    <div class="form-group">
+        <label for="lastName">Last Name <span class="required">*</span></label>
+        <input type="text" id="lastName" th:field="*{lastName}" required>
+    </div>
 
-    <button type="submit">Update User</button>
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" id="age" th:field="*{age}">
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input type="email" id="email" th:field="*{email}" required>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" th:field="*{password}"
+               placeholder="Leave blank to keep current password" />
+        <div class="info">* Leave blank if you don't want to change the password</div>
+    </div>
+
+    <!-- Блок выбора ролей -->
+    <div class="role-group">
+        <span class="role-group-title">Select Roles:</span>
+
+        <!-- Отладочная информация -->
+        <div th:if="${allRoles == null}" style="color: red; padding: 10px; background: #ffe6e6; border-radius: 4px; margin-bottom: 10px;">
+            ERROR: No roles found! Please check database.
+        </div>
+        <div th:if="${allRoles != null and allRoles.isEmpty()}" style="color: orange; padding: 10px; background: #fff3cd; border-radius: 4px; margin-bottom: 10px;">
+            WARNING: Roles list is empty! Please create roles in database.
+        </div>
+
+        <div th:each="role : ${allRoles}">
+            <input type="checkbox"
+                   th:field="*{roles}"
+                   th:value="${role}"
+                   th:checked="${user.roles.contains(role)}" />
+            <label th:text="${role.name}">Role</label>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit">Update User</button>
+        <a href="/admin" class="cancel">Cancel</a>
+    </div>
+
+    <div th:if="${error}" class="error" th:text="${error}"></div>
 </form>
+
+<!-- Отладочная информация -->
+<div style="margin-top: 20px; padding: 10px; background: #e3f2fd; border-radius: 4px; font-size: 12px;">
+    <strong>Debug Info:</strong><br/>
+    User ID: <span th:text="${user.id}">N/A</span><br/>
+    Username: <span th:text="${user.username}">N/A</span><br/>
+    Current Roles: <span th:each="role : ${user.roles}" class="role-badge" th:text="${role.name}">ROLE</span><br/>
+    All Roles count: <span th:text="${allRoles != null ? allRoles.size() : 'null'}">0</span>
+</div>
 </body>
 </html>
