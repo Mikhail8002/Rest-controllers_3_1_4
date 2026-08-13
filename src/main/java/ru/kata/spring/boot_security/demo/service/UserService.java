@@ -11,13 +11,17 @@ import java.util.List;
 
 public interface UserService extends UserDetailsService {
     User findById(Long id);
+
     User findByUsername(String username);
-    void save(User user);
-    void update(User user);
+
     void delete(Long id);
+
     Iterable<User> findAll();
+
     List<Role> findAllRoles();
+
     User createUserFromDTO(UserDTO userDTO);
+
     User updateUserFromDTO(Long id, UserDTO userDTO);
 
 }

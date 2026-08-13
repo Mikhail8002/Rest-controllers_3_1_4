@@ -21,7 +21,6 @@ public class AdminController {
     private UserService userService;
 
     @GetMapping
-    @Transactional
     public String adminPage(Model model) {
         model.addAttribute("users", userService.findAll());
         return "admin/index";

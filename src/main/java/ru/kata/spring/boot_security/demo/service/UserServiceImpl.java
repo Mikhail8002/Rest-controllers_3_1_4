@@ -67,39 +67,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-        userRepository.save(user);
-    }
-
-    @Override
-    @Transactional
-    public void update(User user) {
-        User existingUser = userRepository.findById(user.getId()).orElse(null);
-
-        if (existingUser != null) {
-
-            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-                if (!isPasswordEncoded(user.getPassword())) {
-                    user.setPassword(passwordEncoder.encode(user.getPassword()));
-                }
-            } else {
-
-                user.setPassword(existingUser.getPassword());
-            }
-        }
-        userRepository.save(user);
-    }
-
-    private boolean isPasswordEncoded(String password) {
-
-        return password != null && password.startsWith("$2");
-    }
-
-    @Override
-    @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
