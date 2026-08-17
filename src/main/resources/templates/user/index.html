@@ -4,290 +4,135 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль пользователя</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             padding: 20px;
         }
-
-        .profile-container {
+        .profile-card {
             background: white;
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
-            width: 100%;
             padding: 40px;
-            animation: fadeIn 0.5s ease-in;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .profile-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-
-        .profile-header h1 {
+        .profile-card h2 {
             color: #333;
-            font-size: 28px;
             font-weight: 700;
+            margin-bottom: 10px;
         }
-
-        .profile-header .subtitle {
+        .profile-card .subtitle {
             color: #888;
             font-size: 14px;
-            margin-top: 5px;
+            margin-bottom: 30px;
         }
-
         .avatar {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 40px;
+            font-size: 32px;
             color: white;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            margin: 0 auto 20px;
         }
-
-        .info-grid {
+        .user-info {
             display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 10px 0;
-            margin: 20px 0;
+            grid-template-columns: 150px 1fr;
+            gap: 10px 20px;
+            margin-bottom: 30px;
         }
-
-        .info-label {
+        .user-info .label {
             font-weight: 600;
             color: #555;
-            padding: 12px 15px;
-            background: #f8f9fa;
-            border-radius: 8px 0 0 8px;
-            display: flex;
-            align-items: center;
+            padding: 8px 0;
         }
-
-        .info-label i {
-            margin-right: 8px;
-        }
-
-        .info-value {
-            padding: 12px 15px;
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 0 8px 8px 0;
-            display: flex;
-            align-items: center;
+        .user-info .value {
+            padding: 8px 0;
             color: #333;
-            word-break: break-word;
+            border-bottom: 1px solid #f0f0f0;
         }
-
-        .info-value .role-badge {
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin: 2px 4px;
-            display: inline-block;
+        .user-info .value .badge {
+            margin: 2px;
         }
-
-        .info-value .role-badge.admin {
-            background: #f44336;
-        }
-
-        .info-value .role-badge.user {
-            background: #4CAF50;
-        }
-
-        .info-value .no-roles {
-            color: #f44336;
-            font-style: italic;
-        }
-
-        .actions {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 25px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-danger {
-            background: #f44336;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #d32f2f;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(244, 67, 54, 0.4);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: #4CAF50;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #388E3C;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.4);
-        }
-
-        .error-message {
-            text-align: center;
-            color: #f44336;
-            padding: 30px;
-            font-size: 16px;
-        }
-
-        .error-message i {
-            font-size: 48px;
-            display: block;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .profile-container {
-                padding: 20px;
-            }
-
-            .info-grid {
+        @media (max-width: 576px) {
+            .user-info {
                 grid-template-columns: 1fr;
-                gap: 5px;
+                gap: 0;
             }
-
-            .info-label {
-                border-radius: 8px 8px 0 0;
-            }
-
-            .info-value {
-                border-radius: 0 0 8px 8px;
-                border-top: none;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .actions .btn {
-                width: 100%;
-                justify-content: center;
+            .user-info .label {
+                padding-bottom: 0;
             }
         }
     </style>
 </head>
 <body>
-
-<div class="profile-container">
-    <!-- Шапка профиля -->
-    <div class="profile-header">
+<div class="profile-card">
+    <div class="text-center">
         <div class="avatar" th:text="${user != null ? user.username.substring(0, 1).toUpperCase() : '?'}"></div>
-        <h1 th:text="${user != null ? user.firstName + ' ' + user.lastName : 'Профиль пользователя'}"></h1>
-        <div class="subtitle" th:text="${user != null ? '@' + user.username : 'Данные недоступны'}"></div>
+        <h2 th:text="${user != null ? user.firstName + ' ' + user.lastName : 'Профиль пользователя'}"></h2>
+        <p class="subtitle" th:text="${user != null ? '@' + user.username : 'Данные недоступны'}"></p>
     </div>
 
-    <!-- Информация о пользователе -->
     <div th:if="${user != null}">
-        <div class="info-grid">
-            <div class="info-label">🆔 ID</div>
-            <div class="info-value" th:text="${user.id}"></div>
+        <div class="user-info">
+            <div class="label"><i class="bi bi-hash"></i> ID</div>
+            <div class="value" th:text="${user.id}"></div>
 
-            <div class="info-label">👤 Имя пользователя</div>
-            <div class="info-value" th:text="${user.username}"></div>
+            <div class="label"><i class="bi bi-person"></i> Username</div>
+            <div class="value" th:text="${user.username}"></div>
 
-            <div class="info-label">📛 Имя</div>
-            <div class="info-value" th:text="${user.firstName}"></div>
+            <div class="label"><i class="bi bi-person-badge"></i> First Name</div>
+            <div class="value" th:text="${user.firstName}"></div>
 
-            <div class="info-label">📛 Фамилия</div>
-            <div class="info-value" th:text="${user.lastName}"></div>
+            <div class="label"><i class="bi bi-person-badge"></i> Last Name</div>
+            <div class="value" th:text="${user.lastName}"></div>
 
-            <div class="info-label">🎂 Возраст</div>
-            <div class="info-value" th:text="${user.age}"></div>
+            <div class="label"><i class="bi bi-calendar"></i> Age</div>
+            <div class="value" th:text="${user.age}"></div>
 
-            <div class="info-label">📧 Email</div>
-            <div class="info-value" th:text="${user.email}"></div>
+            <div class="label"><i class="bi bi-envelope"></i> Email</div>
+            <div class="value" th:text="${user.email}"></div>
 
+            <div class="label"><i class="bi bi-shield"></i> Role</div>
+            <div class="value">
+                    <span th:each="role : ${user.roles}">
+                        <span class="badge"
+                              th:classappend="${role.name == 'ROLE_ADMIN'} ? 'bg-danger' : 'bg-primary'"
+                              th:text="${role.name.replace('ROLE_', '')}"></span>
+                    </span>
+                <span th:if="${user.roles == null or user.roles.isEmpty()}" class="text-danger">
+                        <i class="bi bi-exclamation-triangle"></i> Нет ролей
+                    </span>
+            </div>
+        </div>
 
-
-        <!-- Действия -->
-        <div class="actions">
-
-            <a href="/logout" class="btn btn-danger">🚪 Выйти</a>
+        <div class="text-center mt-3">
+            <a href="/logout" class="btn btn-danger">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
         </div>
     </div>
 
-    <!-- Сообщение об ошибке -->
-    <div th:if="${user == null}" class="error-message">
-        <div>😔</div>
-        <p>Данные пользователя недоступны</p>
-        <a href="/login" class="btn btn-primary" style="margin-top: 15px;">🔐 Войти</a>
+    <div th:if="${user == null}" class="text-center py-4">
+        <div class="display-1 text-muted">😔</div>
+        <p class="text-muted">Данные пользователя недоступны</p>
+        <a href="/login" class="btn btn-primary mt-3">
+            <i class="bi bi-box-arrow-in-right"></i> Войти
+        </a>
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
