@@ -1,15 +1,29 @@
 package ru.kata.spring.boot_security.demo.entity;
 
+import javax.validation.constraints.*;
 import java.util.Set;
 
 public class UserDTO {
     private Long id;
+
+    @NotBlank(message = "Username обязателен")
+    @Size(min = 3, max = 50, message = "Username должен быть от 3 до 50 символов")
     private String username;
+
+    @Size(min = 6, message = "Пароль должен быть не менее 6 символов")
     private String password;
+
     private String firstName;
     private String lastName;
+
+    @Min(value = 0, message = "Возраст должен быть положительным")
+    @Max(value = 150, message = "Возраст должен быть не более 150")
     private int age;
+
+    @Email(message = "Некорректный email")
     private String email;
+
+    @NotNull(message = "Роли обязательны")
     private Set<Long> roleIds; // ID выбранных ролей
 
     public UserDTO() {
